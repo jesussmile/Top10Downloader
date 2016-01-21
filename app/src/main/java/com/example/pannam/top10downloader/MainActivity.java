@@ -2,8 +2,6 @@ package com.example.pannam.top10downloader;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -25,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     //private TextView xmlTextView;
     private Button btnParse;
     private ListView listApps;
+    private String mFileContents;
 
 
     @Override
@@ -39,7 +38,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                ParseApplications parseApplications = new ParseApplications(mFileContents);
+
+                parseApplications.process();
             }
+
+
+
         });
 
         listApps = (ListView) findViewById(R.id.xmlListView);
@@ -75,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
 
     private class DownloadData extends AsyncTask<String, Void, String> {
 
-        private String mFileContents;
 
         @Override
         protected String doInBackground(String... params) {
