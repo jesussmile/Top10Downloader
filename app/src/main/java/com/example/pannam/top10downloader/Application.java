@@ -25,11 +25,21 @@ public class Application {
         this.artist = artist;
     }
 
+
     public String getReleaseDate() {
         return releaseDate;
     }
 
     public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
+    }
+
+    @Override
+    public String toString() {
+        return
+                "Name= " + name + "\n" +
+                        "Artist= " + artist + "\n" +
+                        "ReleaseDate= " + releaseDate + "\n";
+
     }
 }

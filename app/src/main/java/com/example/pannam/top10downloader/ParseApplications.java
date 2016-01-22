@@ -28,7 +28,7 @@ public class ParseApplications {
 
     public boolean process() {
         boolean status = true;
-        Application currentRecord;
+        Application currentRecord = null;
         boolean inEntry = false;
         String textValue = "";
 
@@ -44,18 +44,37 @@ public class ParseApplications {
                 String tagName = xpp.getName();
                 switch (eventType) {
                     case XmlPullParser.START_TAG:
-                        Log.d("ParseApplications", "Starting tag for " + tagName);
-
+//                        Log.d("ParseApplications", "Starting tag for " + tagName);
 
                         if (tagName.equalsIgnoreCase("entry")) {
                             inEntry = true;
                             currentRecord = new Application();
-                            break;
 
                         }
-                    case XmlPullParser.END_TAG:
-                        Log.d("ParseApplications", "Ending tag for " + tagName);
                         break;
+                    case XmlPullParser.TEXT:
+                        textValue = xpp.getText();
+                        break;
+
+
+                    case XmlPullParser.END_TAG:
+//                        Log.d("ParseApplications", "Ending tag for " + tagName);
+                        if (inEntry) {
+                            if (tagName.equalsIgnoreCase("entry")) {
+                                applications.add(currentRecord);
+                                inEntry = false;
+                            }else if (tagName.equalsIgnoreCase("name")){
+                                currentRecord.setName(textValue);
+                            }else if (tagName.equalsIgnoreCase("artist")){
+                                currentRecord.setArtist(textValue);
+
+                            }else if (tagName.equalsIgnoreCase("releaseDate")){
+                                currentRecord.setReleaseDate(textValue);
+                            }
+                        }
+
+                        break;
+
                     default:
                         //Nothing else to do
                 }
@@ -63,10 +82,17 @@ public class ParseApplications {
             }
 
 
-
         } catch (Exception e) {
             status = false;
             e.printStackTrace();
+        }
+
+        for(Application app: applications){
+            Log.d("ParseApplications", "******************");
+            Log.d("ParseApplications","Name: " +app.getName());
+            Log.d("ParseApplications","Artist: " +app.getArtist());
+            Log.d("ParseApplications","ReleaseDate: " +app.getReleaseDate());
+
         }
         return true;
 

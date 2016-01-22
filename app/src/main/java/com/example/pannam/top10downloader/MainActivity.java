@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -33,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //xmlTextView =(TextView)findViewById(R.id.xmlTextView);
+
+
         btnParse = (Button) findViewById(R.id.btnParse);
         btnParse.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,8 +44,13 @@ public class MainActivity extends AppCompatActivity {
                 ParseApplications parseApplications = new ParseApplications(mFileContents);
 
                 parseApplications.process();
-            }
+                ArrayAdapter<Application> arrayAdapter = new ArrayAdapter<Application>(
 
+                        MainActivity.this, R.layout.list_item, parseApplications.getApplications());
+                listApps.setAdapter(arrayAdapter);
+
+
+            }
 
 
         });
@@ -50,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         listApps = (ListView) findViewById(R.id.xmlListView);
         //Log.d("tt","tt");
         DownloadData downloadData = new DownloadData();
-        downloadData.execute("http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/topfreeapplications/limit=10/xml");
+        downloadData.execute("http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/toppaidapplications/limit=25/xml");
 
 
     }
